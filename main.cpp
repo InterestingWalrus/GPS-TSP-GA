@@ -1,23 +1,16 @@
 #include <QCoreApplication>
-#include "gpsclass.h"
 #include <iostream>
 #include<vector>
 #include<algorithm>
 #include<iterator>
 #include <ctime>
-
-
-#define NUM_GEN 100
+#include "population.h"
 
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     std::srand(static_cast<unsigned int>(std::time(nullptr)));
-
-
-    GpsClass routeModel;
-    int num_generations = 0;
 
     QGeoCoordinate start_point;
     start_point.setLatitude(52.755928);
@@ -64,6 +57,8 @@ int main(int argc, char *argv[])
     point11.setLongitude(-1.257367);
 
     std::vector<QGeoCoordinate> waypoints;
+    int nd = 4;
+
 
     waypoints.push_back(start_point);
     waypoints.push_back(point2);
@@ -78,21 +73,8 @@ int main(int argc, char *argv[])
     waypoints.push_back(point11);
     waypoints.push_back(start_point);
 
-
-    routeModel.initialiseGA(waypoints, 100);
-
-    while(num_generations < NUM_GEN)
-    {
-        routeModel.computeFitness();
-
-        routeModel.normalizeFitness();
-
-        routeModel.nextGeneration();
-
-        num_generations++;
-
-    }
+    Population pop(waypoints, nd);
 
 
-     return a.exec();
+    return a.exec();
 }
